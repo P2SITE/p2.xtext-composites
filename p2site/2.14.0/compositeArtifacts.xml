@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeArtifactRepository version='1.0.0'?>
+<repository name='Xtext 2.14.0 All In One (Release)' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+  <properties size='1'>
+    <property name='p2.timestamp' value='1585924974905'/>
+  </properties>
+  <children size='4'>
+    <child location='https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.9.0/'/>
+    <child location='https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.14.0/'/>
+    <child location='https://download.eclipse.org/modeling/m2t/xpand/updates/releases/R201605260315/'/>
+    <child location='https://download.eclipse.org/modeling/emf/emf/builds/release/2.14/'/>
+  </children>
+</repository>
