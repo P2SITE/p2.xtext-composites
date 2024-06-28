@@ -8,6 +8,6 @@
     <child location='https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.14.0/'/>
     <child location='https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.30.0/'/>
     <child location='https://download.eclipse.org/modeling/m2t/xpand/updates/releases/R201605260315/'/>
-    <child location='https://download.eclipse.org/modeling/emf/emf/builds/release/2.33/'/>
+    <child location='https://download.eclipse.org/modeling/emf/emf/builds/release/2.33.0/'/>
   </children>
 </repository>
