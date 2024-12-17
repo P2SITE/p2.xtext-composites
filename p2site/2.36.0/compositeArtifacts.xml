@@ -7,6 +7,6 @@
   <children size='3'>
     <child location='https://download.eclipse.org/modeling/emft/mwe/updates/releases/2.19.0/'/>
     <child location='https://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.36.0/'/>
-    <child location='https://download.eclipse.org/modeling/emf/emf/builds/release/2.38.0/'/>
+    <child location='https://download.eclipse.org/modeling/emf/emf/builds/release/2.39.0/'/>
   </children>
 </repository>
