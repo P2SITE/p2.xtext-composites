@@ -46,7 +46,7 @@ jobs:
       - name: Generate index.html if not existing
         run: |
           INDEX_FILE=p2site/index.html
-          [[ ! -f "${INDEX_FILE}" ]] && echo "This URL provides Eclipse P2 installable artifacts." > "${INDEX_FILE}"
+          [[ ! -f "${INDEX_FILE}" ]] && echo "This URL provides Eclipse P2 installable artifacts." > "${INDEX_FILE}" || true
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
