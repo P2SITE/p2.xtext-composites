@@ -2,9 +2,9 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the follwing branch(es):
   push:
-    branches: ["main"]
+    branches: ["gh_pages"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -43,9 +43,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Generate index.html
+      - name: Generate index.html if not existing
         run: |
-          echo "This URL provides Eclipse P2 installable artifacts." > p2site/index.html
+          INDEX_FILE=p2site/index.html
+          [[ ! -f "${INDEX_FILE}" ]] && echo "This URL provides Eclipse P2 installable artifacts." > "${INDEX_FILE}"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
