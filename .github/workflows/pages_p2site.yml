@@ -23,9 +23,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build_deployment_package:
+    name: Build Deployment Package
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      artifact_name: ${{ steps.set_env.outputs.artifact_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set Environment Vars
+        id: set_env
+        run: |
+          ARTIFACT_NAME='github-pages-deployment'
+          echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
+          echo "artifact_name=${ARTIFACT_NAME}" >> "$GITHUB_OUTPUT"
+      - name: Generate index.html if not existing
+        run: |
+          INDEX_FILE=p2site/index.html
+          [[ ! -f "${INDEX_FILE}" ]] && echo "This URL provides Eclipse P2 installable artifacts." > "${INDEX_FILE}" || true
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        id: upload
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload repository path p2site only
+          path: 'p2site'
+          # Name of the artifact uploaded
+          name: ${{ env.ARTIFACT_NAME }}
+
   cleanup_deployment_history:
+    needs: build_deployment_package
     name: Cleanup Deployment History
     runs-on: ubuntu-latest
+    outputs:
+      artifact_name: ${{ needs.build_deployment_package.outputs.artifact_name }}
     steps:
       - name: Delete Previous Deployments
         uses: strumwolf/delete-deployment-environment@v3
@@ -34,26 +67,19 @@ jobs:
           environment: github-pages
           onlyRemoveDeployments: true
 
-  deploy:
+  deploy_to_github_pages:
+    name: Deploy Package to GitHub Pages
     needs: cleanup_deployment_history
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Generate index.html if not existing
+      - name: Echo artifact_name
         run: |
-          INDEX_FILE=p2site/index.html
-          [[ ! -f "${INDEX_FILE}" ]] && echo "This URL provides Eclipse P2 installable artifacts." > "${INDEX_FILE}" || true
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload repository path p2site only
-          path: 'p2site'
+          echo "artifact_name=${{ needs.cleanup_deployment_history.outputs.artifact_name }}"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ needs.cleanup_deployment_history.outputs.artifact_name }}
