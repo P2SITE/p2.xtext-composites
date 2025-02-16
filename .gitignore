@@ -1,1 +1,5 @@
+# Generated files and folders:
 target/
+*.html
+*.xml
+*.index

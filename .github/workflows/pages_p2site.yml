@@ -30,14 +30,56 @@ jobs:
     outputs:
       artifact_name: ${{ steps.set_env.outputs.artifact_name }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Set Environment Vars
         id: set_env
         run: |
           ARTIFACT_NAME='github-pages-deployment'
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
           echo "artifact_name=${ARTIFACT_NAME}" >> "$GITHUB_OUTPUT"
+          MAVEN_VERSION_ENFORCED='3.9.6'
+          echo "MAVEN_VERSION_ENFORCED=${MAVEN_VERSION_ENFORCED}" >> $GITHUB_ENV
+          echo "maven_version_enforced=${MAVEN_VERSION_ENFORCED}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup JAVA home with Maven settings for publishing to Maven Central
+      - name: Setup JAVA home with Maven settings.xml
+        id: setup-java-home
+        uses: GHCICD/setup-java@vHEAD-GHCICD-552
+        with:
+          java-version: 21
+          distribution: zulu
+          # We prefer to get an empty local repo for any build
+          #cache: maven
+      - name: Determine default installed Maven version
+        id: default-maven
+        run: |
+          DEFAULT_MAVEN_VERSION="$(mvn -q -v)"
+          echo "maven-version=${DEFAULT_MAVEN_VERSION}" >> $GITHUB_OUTPUT
+          echo "Default installed Maven version: ${DEFAULT_MAVEN_VERSION}"
+      - name: Update Maven version if required
+        uses: mavenplugins/actions-setup-maven@vHEAD
+        if: steps.set_env.outputs.maven_version_enforced != steps.default-maven.outputs.maven-version
+        with:
+          maven-version: '${{ steps.set_env.outputs.maven_version_enforced }}'
+      - name: Show initial Maven setup result
+        run: |
+          echo "PATH:      ${PATH}"
+          echo "JAVA_HOME: ${JAVA_HOME}"
+          mvn --version
+          echo "MAVEN_OPTS: ${MAVEN_OPTS}"
+          echo "##### BEGIN - settings.xml"
+          cat ~/.m2/settings.xml
+          echo "##### END - settings.xml"
+          echo "##### BEGIN - toolchains.xml"
+          cat ~/.m2/toolchains.xml
+          echo "##### END - toolchains.xml"
+      
+      - name: Generate composite files
+        run: |
+          #mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.6:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=. -Dp2site.timeStamp=1739403019784
+          mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.6:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=.
       - name: Generate index.html if not existing
         run: |
           INDEX_FILE=p2site/index.html
