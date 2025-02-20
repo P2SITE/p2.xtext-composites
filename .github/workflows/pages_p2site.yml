@@ -78,8 +78,8 @@ jobs:
       
       - name: Generate composite files
         run: |
-          #mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.7-SNAPHOT:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=. -Dp2site.timeStamp=1739403019784
-          mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.7-SNAPSHOT:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=.
+          #mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.7:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=. -Dp2site.timeStamp=1739403019784
+          mvn -ntp -B -e io.github.mavenplugins:p2site-maven-plugin:1.0.7:build-index-html -Dp2site.baseDir=p2site -Dp2site.compositeXmlsForFoldersWithUpdateSitePropertiesOnly -Dp2site.createCompositeXmls -Dproject.basedir=.
       - name: Generate index.html if not existing
         run: |
           INDEX_FILE=p2site/index.html
