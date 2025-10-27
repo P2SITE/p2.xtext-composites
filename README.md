@@ -9,6 +9,8 @@ curl https://raw.githubusercontent.com/eclipse-xtext/xtext-website/refs/heads/ma
 This repos [p2site](../../tree/main/p2site) content is provided via the following update sites by Eclipse release:
 | Eclipse | Update site  |
 | :------ | :----------- |
+| 2025-09 | https://p2site.github.io/p2.xtext-composites/2.40.0/ |
+| 2025-06 | https://p2site.github.io/p2.xtext-composites/2.39.0/ |
 | 2025-03 | https://p2site.github.io/p2.xtext-composites/2.38.0/ |
 | 2024-12 | https://p2site.github.io/p2.xtext-composites/2.37.0/ |
 | 2024-09 | https://p2site.github.io/p2.xtext-composites/2.36.0/ |
